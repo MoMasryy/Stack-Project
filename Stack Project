@@ -1,0 +1,266 @@
+using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+public class stack
+{
+    public int count { get; private set; }
+    private int[] Stack;
+
+    public stack(int size)
+    {
+        Stack = new int[size];
+        count = -1;
+    }
+
+    public void Push(int size)
+    {
+        if (count >= size - 1)
+            Console.WriteLine("Stack is full!");
+        else
+        {
+            Console.Write("Enter a Number: ");
+            int x = int.Parse(System.Console.ReadLine());
+            count++;
+            Stack[count] = x;
+            Console.WriteLine($"{x} is Pushed successfully");
+        }
+    }
+
+    public int Pop()
+    {
+        int result = -1;
+        if (count == -1)
+            Console.WriteLine("Stack is empty");
+        else
+        {
+            result = Stack[count];
+            count--;
+        }
+        return result;
+    }
+
+    public int Top()
+    {
+        int result = -1;
+        if (count == -1)
+            Console.WriteLine("Stack is empty");
+        else
+            result = Stack[count];
+        return result;
+    }
+
+    public void isempty()
+    {
+        if (count == -1)
+            Console.WriteLine("Stack is empty");
+        else
+            Console.WriteLine("Stack is not empty");
+    }
+
+    public void Display()
+    {
+        if (count == -1)
+            Console.WriteLine("Stack is empty");
+        else
+        {
+            Console.WriteLine("Stack Data:");
+            for (int i = count; i >= 0; i--)
+                Console.WriteLine(Stack[i]);
+        }
+    }
+
+    public void Search()
+    {
+        int x;
+        int counter = 0;
+        if (count == -1)
+            Console.WriteLine("Stack is empty");
+        else
+        {
+            Console.WriteLine("Enter number to Search");
+            x = int.Parse(Console.ReadLine());
+            for (int i = 0; i <= count; i++)
+            {
+                if (Stack[i] == x)
+                    counter++;
+            }
+            if (counter != 0)
+                Console.WriteLine($"{x} was found {counter} times in the Stack");
+            else
+                Console.WriteLine($"{x} was not found in the Stack");
+        }
+    }
+
+    public void Swap()
+    {
+        int x, y, temp, cx = 0, cy = 0;
+        if (count == -1)
+            Console.WriteLine("Stack is empty");
+        else
+        {
+            Console.WriteLine("Enter the two numbers you want to Swap");
+            x = int.Parse(Console.ReadLine());
+            y = int.Parse(Console.ReadLine());
+            for (int i = 0; i <= count; i++)
+            {
+                if (Stack[i] == x)
+                {
+                    cx++;
+                    for (int j = 0; j <= count; j++)
+                    {
+                        if (Stack[j] == y)
+                        {
+                            cy++;
+                            temp = Stack[i];
+                            Stack[i] = Stack[j];
+                            Stack[j] = temp;
+                            Console.WriteLine("Swapped Successful");
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            if (cx == 0)
+                Console.WriteLine($"{x} was not found in the Stack");
+            else if (cy == 0)
+                Console.WriteLine($"{y} was not found in the Stack");
+        }
+    }
+
+    public void Reverse()
+    {
+        int temp;
+        if (count == -1)
+            Console.WriteLine("Stack is empty");
+        else
+        {
+            for (int i = 0; i <= count / 2; i++)
+            {
+                temp = Stack[i];
+                Stack[i] = Stack[count - i];
+                Stack[count - i] = temp;
+            }
+            Console.WriteLine("Stack Reversed successfully");
+        }
+    }
+
+    public void Sort()
+    {
+        int temp;
+        char x;
+        if (count == -1)
+            Console.WriteLine("Stack is empty");
+        else
+        {
+            Console.WriteLine("Enter A for Ascending Sort or D for Descending Sort");
+            x = char.Parse(Console.ReadLine());
+            if (x == 'A' || x == 'a')
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (Stack[i] < Stack[i + 1])
+                    {
+                        temp = Stack[i];
+                        Stack[i] = Stack[count - i];
+                        Stack[count - i] = temp;
+                    }
+                }
+                Console.WriteLine("Stack Sorted successfully");
+            }
+            else if (x == 'D' || x == 'd')
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (Stack[i] > Stack[i + 1])
+                    {
+                        temp = Stack[i];
+                        Stack[i] = Stack[count - i];
+                        Stack[count - i] = temp;
+                    }
+                }
+                Console.WriteLine("Stack Sorted successfully");
+            }
+            else
+                Console.WriteLine("Wrong Input");
+        }
+    }
+}
+namespace Stack
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            System.Console.Write("Enter Size of Stack: ");
+            int Size = int.Parse(Console.ReadLine());
+
+            var Stack = new stack(Size);
+            int choice;
+            int y;
+            while (true)
+            {
+                System.Console.WriteLine("Enter From These Numbers To Do Specific Action:");
+                System.Console.WriteLine("1. Push");
+                System.Console.WriteLine("2. Pop");
+                System.Console.WriteLine("3. Top");
+                System.Console.WriteLine("4. Is Empty");
+                System.Console.WriteLine("5. Display Data");
+                System.Console.WriteLine("6. Search");
+                System.Console.WriteLine("7. Swap");
+                System.Console.WriteLine("8. Reverse");
+                System.Console.WriteLine("9. Sort");
+                System.Console.WriteLine("10. Exit");
+
+                choice = int.Parse(System.Console.ReadLine());
+
+                if (choice == 1)
+                    Stack.Push(Size);
+
+                else if (choice == 2)
+                {
+                    y = Stack.Pop();
+                    if (y != -1)
+                        Console.WriteLine($"{y} is Popped successfully");
+                }
+
+                else if (choice == 3)
+                {
+                    y = Stack.Top();
+                    if (y != -1)
+                        Console.WriteLine($"Top Number is {y}");
+                }
+
+                else if (choice == 4)
+                    Stack.isempty();
+
+                else if (choice == 5)
+                    Stack.Display();
+
+
+                else if (choice == 6)
+                    Stack.Search();
+
+                else if (choice == 7)
+                    Stack.Swap();
+
+                else if (choice == 8)
+                    Stack.Reverse();
+
+                else if (choice == 9)
+                    Stack.Sort();
+
+                else if (choice == 10)
+                    break;
+            }
+        }
+    }
+}
